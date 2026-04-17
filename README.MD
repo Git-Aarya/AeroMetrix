@@ -1,84 +1,100 @@
-# 🚁 AeroMetrix: Drone Telemetry Analyzer
+<div align="center">
+  <img src="./frontend/public/vite.svg" alt="AeroMetrix Header" width="120" />
+  <h1>🚁 AeroMetrix: Advanced Drone Telemetry Analyzer</h1>
 
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Electron](https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white)
-![Julia](https://img.shields.io/badge/Julia-9558B2?style=for-the-badge&logo=julia&logoColor=white)
+  <p>
+    <strong>A high-performance, cross-platform telemetry processor mapping computational models across Julia, C#, and React.</strong>
+  </p>
 
-AeroMetrix is a cross-platform desktop application designed to ingest, process, and visualize high-fidelity drone flight telemetry. It allows drone operators to upload flight CSVs, analyze battery degradation against wind resistance, and visualize flight paths.
+  <!-- Badges -->
+  <p>
+    <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white" alt="C#">
+    <img src="https://img.shields.io/badge/ASP.NET_Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt="ASP.NET Core">
+    <img src="https://img.shields.io/badge/Julia-9558B2?style=for-the-badge&logo=julia&logoColor=white" alt="Julia">
+    <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React">
+    <img src="https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white" alt="Electron">
+  </p>
+</div>
 
-This project was built to demonstrate full-stack desktop application development, performance-heavy data processing, and modern CI/CD practices.
+---
 
-## 🌟 Features
+## 📖 Overview
 
-* **Data Visualization Desktop App:** Built with React, TypeScript, and Material UI, wrapped in Electron for native desktop performance.
-* **High-Performance Processing:** Utilizes a Julia engine to calculate complex aerodynamic metrics and battery drain vectors from raw sensor data.
-* **Robust API & Storage:** C# ASP.NET Core API using Entity Framework (MVC) and SQL to manage historical flight data and user fleet configurations.
-* **Smart State Management:** Leverages React Query for seamless API synchronization, caching, and background data updates.
+AeroMetrix is a cross-platform desktop application designed to ingest, process, and beautifully visualize high-fidelity drone flight telemetry. Built structurally with rigorous multi-tier framework processing, it acts as a testbed for bridging rapid UI development (React) with heavy numerical data science engines (Julia) seamlessly orchestrated by robust object-relational mapping (C# EF Core).
 
-## 🏗️ Architecture & Tech Stack
+It empowers drone operators to simulate telemetry metrics, analyze battery degradation against complex wind resistance variables, and visualize dynamic fleet health live.
 
-* **Frontend Environment:** VS Code, TypeScript, React, Material UI, React Query, Electron.
-* **Backend Environment:** Visual Studio, C# ASP.NET Core MVC, Entity Framework Core, SQL Server.
-* **Data Processing:** Julia (DataFrames.jl for CSV ingestion and mathematical modeling).
-* **DevOps & CI/CD:** Git, Azure DevOps (Pipelines for automated testing and builds).
-* **Workflow:** Agile (Kanban), AI-assisted development (GitHub Copilot for boilerplate and unit test generation).
+## 🌟 Architecture & Tech Stack
 
-## 🧪 Testing & CI/CD
+AeroMetrix achieves explicit separation of concerns by assigning each micro-pipeline exactly according to its ideal programming paradigm:
 
-AeroMetrix was built using **Test-Driven Development (TDD)** principles to ensure reliability:
-* **Backend:** xUnit and Moq used for API integration and unit testing.
-* **Frontend:** Jest and React Testing Library for component testing.
-* **Pipelines:** Commits to the `main` branch trigger an automated CI/CD pipeline that runs all unit tests, verifies database migrations, and builds the Electron executable.
+1.  **Frontend Desk/Web (React + TypeScript + UI)**
+    *   Responsive, glowing "Glassmorphism" design system utilizing `@mui/material`.
+    *   State and cache-managed exclusively by `@tanstack/react-query` to pull API data flawlessly.
+    *   `Recharts` plotting engines to beautifully graph multi-variable vectors.
+    *   Wrapped inside an `Electron` core shell for native, cross-platform OS deployment distributions.
+
+2.  **Backend Integration Controller (C# ASP.NET Core)**
+    *   RESTful pipeline handling endpoints safely across CORS limitations.
+    *   Entity Framework Core mapped with dynamic `.db` SQLite migrations structurally modeling `FlightLogs` and `DroneConfigurations`.
+    *   Subprocess manager executing external CLI computational environments safely.
+
+3.  **Algorithmic Engine (Julia)**
+    *   The core metrics brain leveraging `DataFrames.jl` and `CSV.jl` modules.
+    *   It rips through hundreds of thousands of matrix points instantly crunching mathematical vectors for Aerodynamic wind deltas and battery voltage degradation heuristics.
+
+## 📸 Dynamic Visualization
+*AeroMetrix translates raw matrix flight data into an actionable AreaChart dynamically comparing voltage drain scaling against aerodynamics over localized flight clusters.*
 
 ## 🚀 Getting Started
 
+Follow these steps to configure your local development playground.
+
 ### Prerequisites
-* Node.js (v18+)
-* .NET 8 SDK
-* SQL Server (LocalDB or Express)
-* Julia (v1.9+)
+*   Node.js (v18+)
+*   .NET 8 SDK
+*   Julia (v1.9+)
 
 ### Installation
 
-1.  **Clone the repository:**
+1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/yourusername/AeroMetrix.git](https://github.com/yourusername/AeroMetrix.git)
+    git clone https://github.com/yourusername/AeroMetrix.git
     cd AeroMetrix
     ```
-
-2.  **Setup the Database (C# / EF Core):**
+2.  **Setup Global Libraries (Julia)**
+    ```bash
+    julia install.jl 
+    # Or natively via Julia console: Pkg.add(["DataFrames", "CSV"])
+    ```
+3.  **Initialize the API & Database Migrations (C# ASP.NET Core)**
     ```bash
     cd backend/AeroMetrix.API
     dotnet restore
     dotnet ef database update
+    # Start the local Host
     dotnet run
     ```
-
-3.  **Run the Julia Processing Service:**
-    ```bash
-    cd backend/AeroMetrix.Processor
-    julia --project=. -e 'using Pkg; Pkg.instantiate(); include("server.jl")'
-    ```
-
-4.  **Launch the Desktop App (Electron / React):**
+4.  **Boot the Desktop Application (Vite/React/Electron)**
     ```bash
     cd frontend
     npm install
-    npm run electron:start
+    # Execute developer electron client
+    npm run electron:dev
     ```
 
-## 📚 Documentation & Guides
+## 🧪 Testing & CI/CD Pipelines
 
-Comprehensive documentation for developers and end-users can be found in the `/docs` directory:
-* [API Schema and Endpoints](./docs/API_REFERENCE.md)
-* [Julia Mathematical Models Explained](./docs/DATA_MODELS.md)
-* [Developer Setup & Contribution Guide](./docs/CONTRIBUTING.md)
+AeroMetrix maintains rigid TDD structures locally enforced by an automated GitHub Actions pipeline (`main.yml`) upon branch merges.
 
-## 🤖 AI Development Workflow
+*   **Backend (xUnit):** Utilizing `Moq` patterns against an `InMemoryDatabase` architecture to validate SQL mapping interactions. (Execute `dotnet test` within `AeroMetrix.API.Tests/`).
+*   **Frontend (Jest):** Integrated tightly into the Vite TSConfig utilizing the `React Testing Library` and `Babel JSDOM` environment to validate Component rendering logic without booting the window. (Execute `npm test` within `frontend/`).
 
-To accelerate development while maintaining code quality, AI tools were utilized throughout the lifecycle:
-* **GitHub Copilot:** Used for generating boilerplate C# interfaces, React functional components, and writing repetitive Regex patterns.
-* **ChatGPT:** Utilized for conceptualizing the Julia data models, drafting Agile user stories, and refining SQL queries for complex telemetry joins.
+## 📚 Deep Dive Documentation
+
+Please browse the core `./docs` sector if you want to intimately explore how the subsystems natively interface!
+
+*   [API Schema and C# Controller Endpoints](./docs/API_REFERENCE.md)
+*   [Julia Mathematical Models Explained](./docs/DATA_MODELS.md)
+*   [Developer Setup & Contribution Guide](./docs/CONTRIBUTING.md)
