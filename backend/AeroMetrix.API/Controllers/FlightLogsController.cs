@@ -54,12 +54,24 @@ public class FlightLogsController : ControllerBase
         
         var status = avgDrain > 150 ? "Critical Battery Drag!" : "Optimal Health";
 
+        var recentLogs = await _context.FlightLogs
+            .OrderByDescending(f => f.Id)
+            .Take(15)
+            .Select(f => new {
+                name = $"Flight {f.Id}",
+                windResistance = Math.Round(f.AvgWindResistanceMs, 1),
+                batteryDrain = Math.Round(f.BatteryDrainRateMAhPerMin, 1)
+            })
+            .Reverse()
+            .ToListAsync();
+
         return Ok(new
         {
             activeDrones = activeDrones,
             avgBatteryDrain = $"{avgDrain:F1} mAh/m",
             windResistanceMax = $"{peakWind:F1} m/s",
-            status = status
+            status = status,
+            recentLogs = recentLogs
         });
     }
 
