@@ -1,9 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using AeroMetrix.API.Data;
+using AeroMetrix.API.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Text.Json;
+using System.IO;
+using System.Linq;
+using System;
 
 namespace AeroMetrix.API.Controllers;
+
+public class JuliaResultDto
+{
+    public double AvgWindResistance { get; set; }
+    public double PeakWindResistance { get; set; }
+    public double AvgBatteryDrain { get; set; }
+    public int TotalFlightTimeS { get; set; }
+}
 
 [ApiController]
 [Route("api/[controller]")]
@@ -17,35 +31,98 @@ public class FlightLogsController : ControllerBase
     }
 
     [HttpGet("summary")]
-    public IActionResult GetSummary()
+    public async Task<IActionResult> GetSummary()
     {
-        // Currently returning hardcoded values representing the MVP integration.
-        // In the future this will query _context.FlightLogs and _context.DroneConfigurations
-        // and trigger the Julia subprocess.
+        var totalLogs = await _context.FlightLogs.CountAsync();
         
+        if (totalLogs == 0)
+        {
+            return Ok(new
+            {
+                activeDrones = 0,
+                avgBatteryDrain = "0 mAh/m",
+                windResistanceMax = "0 m/s",
+                status = "Awaiting Data"
+            });
+        }
+
+        var avgDrain = await _context.FlightLogs.AverageAsync(f => f.BatteryDrainRateMAhPerMin);
+        var peakWind = await _context.FlightLogs.MaxAsync(f => f.AvgWindResistanceMs);
+
+        // Simulation heuristic for active drones based on log counts
+        var activeDrones = totalLogs * 2 + 5; 
+        
+        var status = avgDrain > 150 ? "Critical Battery Drag!" : "Optimal Health";
+
         return Ok(new
         {
-            activeDrones = 24,
-            avgBatteryDrain = "4.2 mAh/m",
-            windResistanceMax = "12 m/s",
-            status = "Optimal Health - LIVE API"
+            activeDrones = activeDrones,
+            avgBatteryDrain = $"{avgDrain:F1} mAh/m",
+            windResistanceMax = $"{peakWind:F1} m/s",
+            status = status
         });
     }
 
     [HttpPost("sync")]
-    public IActionResult TriggerJuliaSync()
+    public async Task<IActionResult> TriggerJuliaSync()
     {
-        // This is a placeholder for triggering the Julia script
-        // e.g. System.Diagnostics.Process.Start("julia", "processing/TelemetryAnalyzer.jl");
-        
-        // Return randomized values to show the UI updating
-        var random = new System.Random();
-        return Ok(new
+        string projectRoot = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", ".."));
+        string juliaScript = Path.Combine(projectRoot, "processing", "TelemetryAnalyzer.jl");
+        string csvPath = Path.Combine(projectRoot, "data", "sample_telemetry.csv");
+
+        var process = new Process
         {
-            activeDrones = random.Next(20, 30),
-            avgBatteryDrain = $"{random.NextDouble() * 2 + 3:F1} mAh/m",
-            windResistanceMax = $"{random.Next(8, 15)} m/s",
-            status = "Optimal Health - SYNCED"
-        });
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "julia",
+                Arguments = $"\"{juliaScript}\" \"{csvPath}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.Start();
+        string output = await process.StandardOutput.ReadToEndAsync();
+        string err = await process.StandardError.ReadToEndAsync();
+        await process.WaitForExitAsync();
+
+        if (process.ExitCode != 0)
+        {
+            return StatusCode(500, $"Julia process failed: {err}");
+        }
+
+        JuliaResultDto juliaData;
+        try
+        {
+            juliaData = JsonSerializer.Deserialize<JuliaResultDto>(output);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Failed to parse Julia output: {output}. Error: {ex.Message}");
+        }
+
+        // Ensure we have a dummy DroneConfiguration to anchor the foreign key
+        var config = await _context.DroneConfigurations.FirstOrDefaultAsync();
+        if (config == null)
+        {
+            config = new DroneConfiguration { DroneModel = "Scout X4", EmptyWeightKg = 2.5, MaxBatteryCapacityMAh = 5000 };
+            _context.DroneConfigurations.Add(config);
+            await _context.SaveChangesAsync();
+        }
+
+        var log = new FlightLog
+        {
+            DroneConfigurationId = config.Id,
+            FlightDate = DateTime.UtcNow,
+            AvgWindResistanceMs = juliaData.AvgWindResistance,
+            BatteryDrainRateMAhPerMin = juliaData.AvgBatteryDrain
+        };
+
+        _context.FlightLogs.Add(log);
+        await _context.SaveChangesAsync();
+
+        return Ok(new { message = "Synced successfully" });
     }
 }
