@@ -1,25 +1,28 @@
 import { ThemeProvider, CssBaseline, Box, Container, Typography, Grid, Card, CardContent, CircularProgress, Button } from '@mui/material';
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import theme from './theme';
 
 const queryClient = new QueryClient();
 
-// Simulated API Call
 const fetchTelemetryData = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        activeDrones: 24,
-        avgBatteryDrain: '4.2 mAh/m',
-        windResistanceMax: '12 m/s',
-        status: 'Optimal Health',
-      });
-    }, 1500);
-  });
+  const response = await axios.get('http://localhost:5079/api/flightlogs/summary');
+  return response.data;
+};
+
+const triggerSync = async () => {
+  const response = await axios.post('http://localhost:5079/api/flightlogs/sync');
+  return response.data;
 };
 
 function Dashboard() {
   const { data, isLoading } = useQuery({ queryKey: ['telemetry'], queryFn: fetchTelemetryData });
+  const syncMutation = useMutation({
+    mutationFn: triggerSync,
+    onSuccess: (newData) => {
+      queryClient.setQueryData(['telemetry'], newData);
+    }
+  });
 
   return (
     <Container maxWidth="lg" sx={{ pt: 8, pb: 8 }}>
@@ -32,18 +35,24 @@ function Dashboard() {
             Drone Telemetry & Battery Analytics Engine
           </Typography>
         </Box>
-        <Button variant="contained" color="primary" size="large">
-          Sync Flight Logs
+        <Button 
+          variant="contained" 
+          color="primary" 
+          size="large"
+          onClick={() => syncMutation.mutate()}
+          disabled={syncMutation.isPending}
+        >
+          {syncMutation.isPending ? 'Syncing...' : 'Sync Flight Logs'}
         </Button>
       </Box>
 
       {isLoading ? (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="40vh">
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh' }}>
           <CircularProgress color="primary" size={60} thickness={4} />
         </Box>
       ) : (
         <Grid container spacing={4}>
-          <Grid item xs={12} md={3}>
+          <Grid size={{xs: 12, md: 3}}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>Active Fleet</Typography>
@@ -51,7 +60,7 @@ function Dashboard() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid size={{xs: 12, md: 3}}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>Avg Battery Drain</Typography>
@@ -59,7 +68,7 @@ function Dashboard() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid size={{xs: 12, md: 3}}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>Peak Wind Resist.</Typography>
@@ -67,7 +76,7 @@ function Dashboard() {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid size={{xs: 12, md: 3}}>
             <Card>
               <CardContent>
                 <Typography color="text.secondary" gutterBottom>Fleet Status</Typography>
