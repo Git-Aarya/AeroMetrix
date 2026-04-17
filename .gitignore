@@ -42,3 +42,7 @@ venv/
 __pycache__/
 *.pyc
 .env
+
+# Generated Data & Scripts
+data/
+install.jl

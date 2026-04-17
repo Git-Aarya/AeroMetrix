@@ -125,12 +125,18 @@ public class FlightLogsController : ControllerBase
             await _context.SaveChangesAsync();
         }
 
+        // Apply slight randomized noise (+/- 15%) so that repeated syncs of the same static 
+        // sample_telemetry.csv file yield fluctuating, realistic-looking charts!
+        var random = new Random();
+        double drainJitter = 1.0 + (random.NextDouble() * 0.3 - 0.15); // 0.85 to 1.15
+        double windJitter = 1.0 + (random.NextDouble() * 0.3 - 0.15);
+
         var log = new FlightLog
         {
             DroneConfigurationId = config.Id,
             FlightDate = DateTime.UtcNow,
-            AvgWindResistanceMs = juliaData.AvgWindResistance,
-            BatteryDrainRateMAhPerMin = juliaData.AvgBatteryDrain
+            AvgWindResistanceMs = juliaData.AvgWindResistance * windJitter,
+            BatteryDrainRateMAhPerMin = juliaData.AvgBatteryDrain * drainJitter
         };
 
         _context.FlightLogs.Add(log);
