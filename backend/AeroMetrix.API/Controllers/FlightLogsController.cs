@@ -105,10 +105,11 @@ public class FlightLogsController : ControllerBase
             return StatusCode(500, $"Julia process failed: {err}");
         }
 
-        JuliaResultDto juliaData;
+        JuliaResultDto? juliaData;
         try
         {
             juliaData = JsonSerializer.Deserialize<JuliaResultDto>(output);
+            if (juliaData == null) throw new Exception("Deserialization returned null.");
         }
         catch (Exception ex)
         {
