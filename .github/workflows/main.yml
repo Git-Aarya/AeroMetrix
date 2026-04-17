@@ -1,0 +1,38 @@
+name: AeroMetrix CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test-backend:
+    name: Build & Test Backend
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 7.0.x
+    - name: Restore dependencies
+      run: dotnet restore backend/AeroMetrix.sln
+    - name: Build
+      run: dotnet build backend/AeroMetrix.sln --no-restore
+    - name: Test
+      run: dotnet test backend/AeroMetrix.sln --no-build --verbosity normal
+
+  build-frontend:
+    name: Build Frontend (Vite)
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+    - name: Install Dependencies
+      run: cd frontend && npm ci
+    - name: Build
+      run: cd frontend && npm run build
