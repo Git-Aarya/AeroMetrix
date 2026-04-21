@@ -66,6 +66,7 @@ public class FlightLogsController : ControllerBase
             .Reverse()
             .ToListAsync();
 
+        // JSON Block containing the data to be sent to the frontend
         return Ok(new
         {
             activeDrones = activeDrones,
@@ -105,6 +106,8 @@ public class FlightLogsController : ControllerBase
         {
             return StatusCode(500, $"Julia process failed: {err}");
         }
+
+        // Deserialize the JSON output from Julia into JuliaResultDto C# object
 
         JuliaResultDto? juliaData;
         try
