@@ -4,7 +4,7 @@ using AeroMetrix.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the IoC container.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=aerometrix.db"));
 
