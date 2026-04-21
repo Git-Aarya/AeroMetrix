@@ -1,15 +1,21 @@
 // Jest tests for the AeroMetrix React app, verifying the dashboard title and Sync Flight Logs button render correctly.
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
 // Mock matchMedia for Material UI
-window.matchMedia = window.matchMedia || function() {
-    return {
-        matches: false,
-        addListener: function() {},
-        removeListener: function() {}
-    };
-};
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query: string): MediaQueryList => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: () => {}, // deprecated
+    removeListener: () => {}, // deprecated
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => false,
+  })
+});
 
 describe('AeroMetrix App', () => {
   it('renders the dashboard title successfully', async () => {
