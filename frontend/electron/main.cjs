@@ -1,3 +1,4 @@
+// Electron main process: creates the BrowserWindow, loads the Vite dev server in development or the built dist/index.html in production.
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 

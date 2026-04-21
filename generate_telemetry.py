@@ -1,3 +1,4 @@
+# Generates a synthetic drone flight telemetry CSV (1000 rows) simulating airspeed, groundspeed, battery voltage, and motor current data for testing.
 import pandas as pd
 import numpy as np
 import os

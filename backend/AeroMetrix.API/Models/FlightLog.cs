@@ -1,3 +1,4 @@
+// Data model representing a single flight log entry, storing the linked drone config, flight date, average wind resistance, and battery drain rate.
 namespace AeroMetrix.API.Models;
 
 public class FlightLog

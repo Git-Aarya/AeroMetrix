@@ -1,3 +1,4 @@
+# Julia processing module that reads flight telemetry CSV data and calculates wind resistance, battery drain, and flight time metrics, outputting results as JSON.
 module TelemetryAnalyzer
 
 using DataFrames

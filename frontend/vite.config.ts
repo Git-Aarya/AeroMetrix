@@ -1,3 +1,4 @@
+// Vite build configuration for the AeroMetrix frontend, enabling the React plugin for JSX transform support.
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 

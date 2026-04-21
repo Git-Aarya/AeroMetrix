@@ -1,3 +1,4 @@
+// Jest configuration for the frontend using ts-jest with jsdom environment, CSS module mocking, and custom TypeScript transform settings.
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
   preset: 'ts-jest',

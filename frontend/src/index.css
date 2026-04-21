@@ -1,3 +1,4 @@
+/* Global base styles for the AeroMetrix frontend: imports Google Fonts, sets the dark background, and defines custom scrollbar and selection colors. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700&display=swap');
 
 html, body, #root {

@@ -1,3 +1,4 @@
+// Data model representing an application user with a unique ID, username, and email address.
 namespace AeroMetrix.API.Models;
 
 public class User

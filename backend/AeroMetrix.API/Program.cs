@@ -1,3 +1,4 @@
+// Entry point for the AeroMetrix ASP.NET Core Web API; configures services including EF Core SQLite, CORS for the Vite frontend, and Swagger.
 using Microsoft.EntityFrameworkCore;
 using AeroMetrix.API.Data;
 

@@ -1,3 +1,4 @@
+// Root React component that wraps the telemetry dashboard with the MUI theme provider and React Query client.
 import { ThemeProvider, CssBaseline, Box, Container, Typography, Grid, Card, CardContent, CircularProgress, Button, Paper } from '@mui/material';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';

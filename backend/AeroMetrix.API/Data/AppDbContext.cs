@@ -1,3 +1,4 @@
+// Entity Framework Core DbContext that maps the Users, DroneConfigurations, and FlightLogs tables to the SQLite database.
 using Microsoft.EntityFrameworkCore;
 using AeroMetrix.API.Models;
 

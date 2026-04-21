@@ -1,3 +1,4 @@
+// xUnit integration tests for FlightLogsController verifying the GET /summary endpoint returns correct empty-state and calculated-average responses.
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;

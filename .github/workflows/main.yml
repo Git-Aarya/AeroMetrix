@@ -1,3 +1,4 @@
+# GitHub Actions CI pipeline that builds and runs xUnit backend tests and builds the Vite frontend on every push or pull request to main.
 name: AeroMetrix CI
 
 on:

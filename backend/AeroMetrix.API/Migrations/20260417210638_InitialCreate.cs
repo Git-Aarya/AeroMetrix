@@ -1,4 +1,5 @@
-﻿using System;
+// EF Core migration applying the InitialCreate schema (DroneConfigurations, Users, FlightLogs tables) to the SQLite database, with rollback support via Down().
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable

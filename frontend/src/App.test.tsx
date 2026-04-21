@@ -1,3 +1,4 @@
+// Jest tests for the AeroMetrix React app, verifying the dashboard title and Sync Flight Logs button render correctly.
 import { render, screen, waitFor } from '@testing-library/react';
 import App from './App';
 

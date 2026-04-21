@@ -1,3 +1,4 @@
+// REST API controller exposing GET /summary and POST /sync endpoints to retrieve aggregated flight metrics and trigger the Julia telemetry analysis pipeline.
 using Microsoft.AspNetCore.Mvc;
 using AeroMetrix.API.Data;
 using AeroMetrix.API.Models;

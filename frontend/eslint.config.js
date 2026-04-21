@@ -1,3 +1,4 @@
+// ESLint flat config for the frontend, enabling TypeScript, React Hooks, and React Refresh rules for all .ts and .tsx source files.
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'

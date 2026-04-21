@@ -1,3 +1,4 @@
+// Material UI dark theme configuration defining the AeroMetrix color palette, typography (Outfit/Inter), and glassmorphism component styles.
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
